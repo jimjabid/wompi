@@ -13,28 +13,27 @@ const PaymentResult = () => {
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     const transactionId = query.get('id');
-    const env = query.get('env');
+    
 
-    console.log('Transaction ID:', transactionId);
-    console.log('Environment:', env);
+    
 
     const fetchTransactionStatus = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/payments/transaction-status?id=${transactionId}`);
-        console.log('API Response:', response.data);
+       
         const { data } = response;
 
         if (data && data.data) {
           setTransactionData(data.data);
-          console.log('Transaction Data:', data.data);
+        
         } else {
-          setError('Invalid transaction data received.');
+          setError('Data de la transaction invalido');
         }
 
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching transaction status:', error);
-        setError('Failed to retrieve payment status.');
+        console.error('Error buscando la transaccion', error);
+        setError('Fallo al recibir el pago');
         setLoading(false);
       }
     };
@@ -42,7 +41,7 @@ const PaymentResult = () => {
     if (transactionId) {
       fetchTransactionStatus();
     } else {
-      setError('No transaction ID provided.');
+      setError('ID de la transaccion no encontrado.');
       setLoading(false);
     }
   }, []);
@@ -51,54 +50,51 @@ const PaymentResult = () => {
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="/">Payment Portal</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/payment">Payment</Nav.Link>
-          </Nav>
+          <Navbar.Brand href="/"> Portal de Pagos Wompi</Navbar.Brand>
+   
         </Container>
       </Navbar>
 
       <Container className="mt-5">
-        <h2>Payment Result</h2>
+        <h2>Resultados del Pago</h2>
         {loading ? (
           <Alert variant="info">
-            <Spinner animation="border" size="sm" /> Fetching payment status...
+            <Spinner animation="border" size="sm" /> Buscando estado del pago....
           </Alert>
         ) : error ? (
           <Alert variant="danger">{error}</Alert>
         ) : (
           <>
             <Alert variant={transactionData.status === 'APPROVED' ? 'success' : 'warning'}>
-              Your payment has been {transactionData.status.toLowerCase()}.
+              Tu pago a sido {transactionData.status.toLowerCase()}.
             </Alert>
             <Table striped bordered hover>
               <tbody>
                 <tr>
-                  <td><strong>Transaction ID</strong></td>
+                  <td><strong>ID de la Transaccion</strong></td>
                   <td>{transactionData.id}</td>
                 </tr>
                 <tr>
-                  <td><strong>Reference</strong></td>
+                  <td><strong>Referencia</strong></td>
                   <td>{transactionData.reference}</td>
                 </tr>
                 <tr>
-                  <td><strong>Status</strong></td>
+                  <td><strong>Estado</strong></td>
                   <td>{transactionData.status}</td>
                 </tr>
                 <tr>
-                  <td><strong>Amount</strong></td>
+                  <td><strong>Monto</strong></td>
                   <td>{transactionData.amount_in_cents / 100} COP</td>
                 </tr>
                 <tr>
-                  <td><strong>Payment Method</strong></td>
+                  <td><strong>Metodo de Pago</strong></td>
                   <td>{transactionData.payment_method_type}</td>
                 </tr>
                 {/* Add more fields as necessary */}
               </tbody>
             </Table>
             <Link to="/payment">
-              <Button variant="primary">Make Another Payment</Button>
+              <Button variant="primary">Realizar otro Pago</Button>
             </Link>
           </>
         )}

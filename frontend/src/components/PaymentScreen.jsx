@@ -13,7 +13,7 @@ const PaymentScreen = () => {
 
   const handleConfirmAmount = () => {
     if (!amount || isNaN(amount) || amount <= 0) {
-      alert('Please enter a valid amount greater than zero.');
+      alert('Ingese una cantidad mayor a cero');
       return;
     }
     setConfirmedAmount(amount);
@@ -23,31 +23,28 @@ const PaymentScreen = () => {
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">Payment Portal</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#payment">Payment</Nav.Link>
-          </Nav>
+          <Navbar.Brand href="#home">Portal de Pagos Wompi</Navbar.Brand>
+      
         </Container>
       </Navbar>
 
       <Container className="mt-5">
         <Row className="justify-content-md-center">
           <Col md={6}>
-            <h2 className="mb-4">Complete Your Payment</h2>
+            <h2 className="mb-4">Complete su Pago</h2>
             <Form>
               <Form.Group className="mb-3" controlId="amount">
-                <Form.Label>Enter Amount (COP)</Form.Label>
+                <Form.Label>Ingrese monto a pagar (COP)</Form.Label>
                 <Form.Control
                   type="number"
                   value={amount}
                   onChange={handleAmountChange}
                   min="1"
-                  placeholder="Enter amount in COP"
+                  placeholder="Ingrese el monto en COP"
                 />
               </Form.Group>
               <Button variant="primary" onClick={handleConfirmAmount}>
-                Confirm Amount
+                Confirmar monto
               </Button>
             </Form>
 
